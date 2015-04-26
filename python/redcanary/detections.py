@@ -10,7 +10,7 @@ class Detections(object):
 
     >>> import requests
     >>> from redcanary import detections
-    >>> url = https://<URL>/openapi/v1/detections.json?auth_token=<API-TOKEN>
+    >>> url = 'https://<URL>/openapi/v1/detections.json?auth_token=<API-TOKEN>'
     >>> response = requests.get(url)
     >>> my_detections = detections.Detections(response.content)
     >>> for d in my_detections:
