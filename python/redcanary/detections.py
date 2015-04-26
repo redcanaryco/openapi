@@ -53,7 +53,7 @@ class Detection(object):
         self._detection = data
 
     def __repr__(self):
-        return "%s %s" % (self.date, self.headline)
+        return "\n%s %s" % (self.date, self.headline)
 
     @property
     def id(self):
