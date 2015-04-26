@@ -42,11 +42,10 @@ class TimelineEntry:
                 ret += "\n"
 
             if self.path:
-                ret += "Path\t\t%s\n" % self.path
+                ret += "Path\t\t%s" % self.path
 
             if self.md5:
-                #TODO: Why don't I need a newline here?
-                ret += "MD5\t\t\t%s" % self.md5
+                ret += "\nMD5\t\t%s" % self.md5
 
         if self.entry_type == 'NetworkConnection':
 
@@ -56,11 +55,11 @@ class TimelineEntry:
                 ret += "Domain\t\t%s\n" % self.domain
 
             if self.ip:
-                ret += "IP\t\t\t%s\n" % self.ip
+                ret += "IP\t\t%s\n" % self.ip
 
             ret += "Port\t\t%s\n" % self.port
 
-            ret += "Protocol\t%s\n" % self.protocol_name
+            ret += "Protocol\t%s" % self.protocol_name
 
         return ret.encode('UTF-8')
 
