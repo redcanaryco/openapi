@@ -1,3 +1,5 @@
+"""Class wrapper for Red Canary timeline objects.
+"""
 
 class Timeline:
     def __init__(self, timeline):

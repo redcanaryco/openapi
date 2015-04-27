@@ -2,6 +2,7 @@ import json
 import sys
 from types import DictType
 
+from redcanary.timeline import Timeline, TimelineEntry
 
 class Detections(object):
     """Class wrapper for output of Red Canary /detections API route.
@@ -121,5 +122,5 @@ class Detection(object):
 
     @property
     def event_timeline(self):
-        return self._detection['event_timeline']
+        return Timeline(self._detection['event_timeline'])
 
