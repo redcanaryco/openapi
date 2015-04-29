@@ -2,9 +2,9 @@ from setuptools import setup
 
 setup(
     name='redcanary',
-    version='0.1a',
+    version='0.2a',
     packages=['redcanary'],
-    url='https://github.com/redcanaryco/openapi',
+    url='https://github.com/redcanaryco/openapi/tree/v2',
     license='',
     author='Keith McCammon',
     author_email='keith@redcanary.co',
