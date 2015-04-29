@@ -58,20 +58,43 @@ class Detection(object):
 
     @property
     def id(self):
-        id_str = self.headline.split(']')[0]
-        return id_str[1:]
+        return self._detection['id']
+
+    @property
+    def headline(self):
+        return self._detection['headline']
 
     @property
     def date(self):
         return self._detection['date']
 
     @property
-    def dns_hostnames(self):
-        return self._detection['host_dns_names']
+    def summary(self):
+        return self._detection['summary']
 
     @property
-    def ip_addresses(self):
-        return self._detection['host_ip_addresses']
+    def user_id(self):
+        return self._detection['user']['id']
+
+    @property
+    def endpoint_name(self):
+        return self._detection['endpoint']['name']
+
+    @property
+    def endpoint_ip_addresses(self):
+        return self._detection['endpoint']['ip_addresses']
+
+    @property
+    def classification(self):
+        return self._detection['classification']
+        
+    @property
+    def subclassification_titles(self):
+        ret = None
+        if len(self._detection['subclassifications']) > 0:
+            ret = self._detection['subclassifications']
+        
+        return ret
 
     @property
     def sensor_group(self):
@@ -85,38 +108,14 @@ class Detection(object):
         return ret
 
     @property
-    def uid(self):
-        return self._detection['uid']
-
-    @property
-    def headline(self):
-        return self._detection['headline']
-
-    @property
     def severity(self):
         return self._detection['severity']
 
     @property
-    def engine_observations(self):
+    def detection_engine_observations(self):
         ret = None
-        if len(self._detection['threat_detection_engine_observations']) > 0:
-            ret = self._detection['threat_detection_engine_observations']
-        
-        return ret
-
-    @property
-    def details(self):
-        return self._detection['details']
-
-    @property
-    def root_classification_title(self):
-        return self._detection['root_classification_title']
-        
-    @property
-    def subclassification_titles(self):
-        ret = None
-        if len(self._detection['subclassification_titles']) > 0:
-            ret = self._detection['subclassification_titles']
+        if len(self._detection['detection_engine_observations']) > 0:
+            ret = self._detection['detection_engine_observations']
         
         return ret
 
@@ -124,3 +123,6 @@ class Detection(object):
     def event_timeline(self):
         return Timeline(self._detection['event_timeline'])
 
+    @property
+    def response_plans(self):
+        return self._detection['response_plans']

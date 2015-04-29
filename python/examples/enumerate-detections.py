@@ -35,7 +35,7 @@ if __name__ == '__main__':
         sys.stderr.write(ENV_ERROR)
         sys.exit(1)
 
-    url = 'https://%s.my.redcanary.co/openapi/v1/detections.json?auth_token=%s' \
+    url = 'https://%s.my.redcanary.co/openapi/v2/detections.json?auth_token=%s' \
         % (rc_customer_id, rc_api_key)
 
     response = requests.get(url)
