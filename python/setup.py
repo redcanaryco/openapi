@@ -10,7 +10,8 @@ setup(
     author_email='keith@redcanary.co',
     description='Python client for Red Canary open API.',
     install_requires=[
-    ],
+    'requests',
+    'django-dotenv'],
     tests_require=[
     ]
 )

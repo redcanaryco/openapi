@@ -3,11 +3,7 @@
 import os
 import sys
 
-try:
-    import requests
-except:
-    print "'pip install requests' to proceed . . ."
-    sys.exit(1)
+import requests
 
 try:
     import dotenv
