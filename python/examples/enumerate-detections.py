@@ -4,8 +4,6 @@ import datetime
 import os
 import sys
 
-import requests
-
 try:
     import dotenv
     dotenv.read_dotenv()
