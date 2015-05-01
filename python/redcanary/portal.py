@@ -8,7 +8,7 @@ EPOCH = '1970-01-01T00:00:00-00'
 DOMAIN='my.redcanary.co'
 BASE_URI='openapi/v2'   
 
-class Portal:
+class RedCanary:
     def __init__(self, rc_customer_id, rc_api_key):
         self.rc_customer_id = rc_customer_id
         self.rc_api_key = rc_api_key

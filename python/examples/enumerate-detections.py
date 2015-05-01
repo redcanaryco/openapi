@@ -11,7 +11,7 @@ except:
     sys.stderr.write("'pip install django-dotenv' to use .env file\n")
 
 from redcanary.detections import Detections, Detection
-from redcanary.portal import Portal
+from redcanary.portal import RedCanary
 from redcanary.timeline import Timeline, TimelineEntry
 
 
@@ -30,7 +30,7 @@ if __name__ == '__main__':
     now = datetime.datetime.now()
     timedelta = datetime.timedelta(days=-7)
 
-    p = Portal(rc_customer_id, rc_api_key)
+    p = RedCanary(rc_customer_id, rc_api_key)
     p.since = now + timedelta
     detections = p.detections()
 
