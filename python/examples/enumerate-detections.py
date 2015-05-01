@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import datetime
 import os
 import sys
 
@@ -12,14 +13,11 @@ except:
     sys.stderr.write("'pip install django-dotenv' to use .env file\n")
 
 from redcanary.detections import Detections, Detection
+from redcanary.portal import Portal
 from redcanary.timeline import Timeline, TimelineEntry
 
 
-ENV_ERROR = """\nRC_CUSTOMER_ID and/or RC_API_KEY environment variables not found.
-
-These environment variables may be set manually, or you can opt to use something
-like dotenv ('pip install django-dotenv'), which allows them to be stored in a 
-file."""
+ENV_ERROR = "\nRC_CUSTOMER_ID and/or RC_API_KEY environment variables not found."
 
 
 if __name__ == '__main__':
@@ -31,11 +29,12 @@ if __name__ == '__main__':
         sys.stderr.write(ENV_ERROR)
         sys.exit(1)
 
-    url = 'https://%s.my.redcanary.co/openapi/v2/detections.json?auth_token=%s' \
-        % (rc_customer_id, rc_api_key)
+    now = datetime.datetime.now()
+    timedelta = datetime.timedelta(days=-7)
 
-    response = requests.get(url)
-    detections = Detections(response.content)
+    p = Portal(rc_customer_id, rc_api_key)
+    p.since = now + timedelta
+    detections = p.get_detections()
 
     for detection in detections:
         print '---------------------------------------------------------------'
