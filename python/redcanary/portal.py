@@ -25,7 +25,7 @@ class Portal:
                                      self.base_uri)
         return url
     
-    def get_detections(self):
+    def detections(self):
         url = '%s/detections.json?auth_token=%s&since=%s' % (self.base_url, 
                                                              self.rc_api_key,
                                                              self.since)

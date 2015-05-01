@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     p = Portal(rc_customer_id, rc_api_key)
     p.since = now + timedelta
-    detections = p.get_detections()
+    detections = p.detections()
 
     for detection in detections:
         print '---------------------------------------------------------------'
