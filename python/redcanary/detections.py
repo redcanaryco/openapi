@@ -78,11 +78,11 @@ class Detection(object):
 
     @property
     def endpoint_name(self):
-        return self._detection['endpoint']['name']
+        return self._detection['endpoint']['latest_info']['hostname']
 
     @property
     def endpoint_ip_addresses(self):
-        return self._detection['endpoint']['ip_addresses']
+        return self._detection['endpoint']['latest_info']['ip_addresses']
 
     @property
     def classification(self):
