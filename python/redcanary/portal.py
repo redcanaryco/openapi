@@ -17,6 +17,7 @@ class RedCanary:
         self.base_uri = BASE_URI
 
         self.since = EPOCH
+        self.ssl_verify=True
 
     @property
     def base_url(self):
@@ -29,6 +30,6 @@ class RedCanary:
         url = '%s/detections.json?auth_token=%s&since=%s' % (self.base_url, 
                                                              self.rc_api_key,
                                                              self.since)
-        response = requests.get(url)
+        response = requests.get(url, verify=self.ssl_verify)
         return Detections(response.content)
         
