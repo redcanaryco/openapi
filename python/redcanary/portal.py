@@ -5,8 +5,9 @@ from redcanary.timeline import Timeline, TimelineEntry
 
 EPOCH = '1970-01-01T00:00:00-00'
 
-DOMAIN='my.redcanary.co'
-BASE_URI='openapi/v2'   
+DOMAIN = 'my.redcanary.co'
+BASE_URI = 'openapi'   
+API_VERSION = 'v2'
 
 class RedCanary:
     def __init__(self, rc_customer_id, rc_api_key):
@@ -15,15 +16,17 @@ class RedCanary:
         
         self.domain = DOMAIN
         self.base_uri = BASE_URI
+        self.api_version = API_VERSION
 
         self.since = EPOCH
         self.ssl_verify=True
 
     @property
     def base_url(self):
-        url = 'https://%s.%s/%s/' % (self.rc_customer_id,
+        url = 'https://%s.%s/%s/%s' % (self.rc_customer_id,
                                      self.domain,
-                                     self.base_uri)
+                                     self.base_uri,
+                                     self.api_version)
         return url
     
     def detections(self):
