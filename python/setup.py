@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='redcanary',
-    version='0.2a',
+    version='0.3',
     packages=find_packages(),
     url='https://github.com/redcanaryco/openapi/tree/v2',
     license='',
@@ -10,7 +10,7 @@ setup(
     author_email='keith@redcanary.co',
     description='Python client for Red Canary open API.',
     install_requires=[
-        'requests',
+        'requests[security]',
         'django-dotenv'
     ],
     entry_points={
