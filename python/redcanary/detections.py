@@ -22,11 +22,13 @@ class Detections(object):
             data = json.loads(data)
         self._detections = data
 
-        self.detection_count = len(self._detections)
         self.position = 0
         
     def __iter__(self):
         return self
+
+    def __len__(self):
+        return len(self._detections)
 
     def next(self):
         try:
@@ -76,13 +78,16 @@ class Detection(object):
     def user_id(self):
         return self._detection['user']['id']
 
+    #TODO: Validate for v2
     @property
     def endpoint_name(self):
-        return self._detection['endpoint']['latest_info']['hostname']
+        #TODO: Validate for v2
+        return self._detection['endpoint']['hostname']
 
+    #TODO: Validate for v2
     @property
     def endpoint_ip_addresses(self):
-        return self._detection['endpoint']['latest_info']['ip_addresses']
+        return self._detection['endpoint']['ip_addresses']
 
     @property
     def classification(self):
@@ -96,16 +101,17 @@ class Detection(object):
         
         return ret
 
-    @property
-    def sensor_group(self):
-        ret = None
-        try:
-            ret = self._detection['host_sensor_groups'][0]
-        except IndexError:
-            sys.stderr.write("Error: %s missing sensor group")
-            ret = None
-
-        return ret
+#    TODO: Put this back once added to v2
+#    @property
+#    def sensor_group(self):
+#        ret = None
+#        try:
+#            ret = self._detection['host_sensor_groups'][0]
+#        except IndexError:
+#            sys.stderr.write("Error: %s missing sensor group")
+#            ret = None
+#
+#        return ret
 
     @property
     def severity(self):
