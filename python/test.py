@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
+import logging
 import unittest
 import redcanary
 
 
 class Test(unittest.TestCase):
     def setUp(self):
-        #logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.DEBUG)
 
         # To hardcode in the info
         # self.client = redcanary.RedCanaryClient('demo', 'xxxxxxxxx')
