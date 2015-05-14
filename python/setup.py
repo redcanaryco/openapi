@@ -11,7 +11,7 @@ setup(
     description='Python client for Red Canary open API.',
     install_requires=[
         'requests[security]',
-        'django-dotenv'
+        'dotenv'
     ],
     entry_points={
         'console_scripts': [
