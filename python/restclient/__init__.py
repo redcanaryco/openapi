@@ -102,7 +102,7 @@ class Resource(object):
 
     @classmethod
     def _request(cls, url):
-        print("GET [%s]" % url)
+        # print("GET [%s]" % url)
         response = requests.get(url, **cls.client._request_options)
         response.raise_for_status()
         return response.json()
