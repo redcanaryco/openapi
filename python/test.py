@@ -9,7 +9,7 @@ class Test(unittest.TestCase):
         #logging.basicConfig(level=logging.DEBUG)
 
         # To hardcode in the info
-        # self.client = redcanary.RedCanaryClient('demo', '9Jkwncysl2fxnvb092nd')
+        # self.client = redcanary.RedCanaryClient('demo', 'xxxxxxxxx')
 
         # Or use the .env
         self.client = redcanary.RedCanaryClient()
