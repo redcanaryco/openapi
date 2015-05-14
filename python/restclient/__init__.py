@@ -1,3 +1,4 @@
+import logging
 import requests
 
 
@@ -102,7 +103,8 @@ class Resource(object):
 
     @classmethod
     def _request(cls, url):
-        print("GET [%s]" % url)
+        logging.debug("GET [%s]" % url)
         response = requests.get(url, **cls.client._request_options)
+        logging.debug(response.url)
         response.raise_for_status()
         return response.json()
