@@ -24,15 +24,18 @@ class RedCanary:
     @property
     def base_url(self):
         url = 'https://%s.%s/%s/%s' % (self.rc_customer_id,
-                                     self.domain,
-                                     self.base_uri,
-                                     self.api_version)
+                                       self.domain,
+                                       self.base_uri,
+                                       self.api_version)
         return url
     
     def detections(self):
         url = '%s/detections.json?auth_token=%s&since=%s' % (self.base_url, 
                                                              self.rc_api_key,
                                                              self.since)
+      
         response = requests.get(url, verify=self.ssl_verify)
+        if response.status_code != requests.codes.ok:
+            response.raise_for_status()
+
         return Detections(response.content)
-        
