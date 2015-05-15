@@ -45,7 +45,7 @@ class RedCanaryClient(RestClient):
 class Detection(Resource):
     @property
     def endpoint(self):
-        return self._has_one_snippet(Endpoint, 'endpoint')
+        return self.has_one(Endpoint, 'endpoint')
 
     @property
     def num_indicators(self):
@@ -57,27 +57,23 @@ class Detection(Resource):
 
     @property
     def response_plans(self):
-        return self._has_many_snippets(ResponsePlan, 'response_plans')
+        return self.has_many(ResponsePlan, 'response_plans')
 
     @property
     def timeline(self):
-        return list([DetectionTimelineEntry._build(item, is_snippet=False) for item in self._data['event_timeline']])
+        return self.has_many(DetectionTimelineEntry, 'event_timeline')
 
 
 class Endpoint(Resource):
     @property
     def detections(self):
-        return list([Detection._build(snippet, is_snippet=True) for snippet in self._data['detections']])
-
-        # @property
-        # def sensor(self):
-        #     return namedtuple('Sensor', self._data['sensor'])
+        return self.has_many(Detection, 'detections')
 
 
 class Indicator(Resource):
     @property
     def detections(self):
-        return self._has_many_snippets(Detection, 'detections')
+        return self.has_many(Detection, 'detections')
 
 
 class ResponsePlan(Resource):
@@ -87,11 +83,11 @@ class ResponsePlan(Resource):
 
     @property
     def endpoint(self):
-        return self._has_one_snippet(Endpoint, 'endpoint')
+        return self.has_one(Endpoint, 'endpoint')
 
     @property
     def detection(self):
-        return self._has_one_snippet(Detection, 'detection')
+        return self.has_one(Detection, 'detection')
 
 
 class DetectionTimelineEntry(Resource):
