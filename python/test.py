@@ -17,8 +17,8 @@ class Test(unittest.TestCase):
 
     def test_detections(self):
         print "DETECTIONS"
-        for detection in self.client.detections:
-            print detection.headline
+        for i, detection in enumerate(self.client.detections):
+            print i, detection.headline
 
             print '  TIMELINE'
             for entry in detection.timeline:
@@ -37,24 +37,61 @@ class Test(unittest.TestCase):
 
             if detection.num_indicators > 0:
                 print '  INDICATORS'
-                for indicator in detection.indicators:
-                    print '    %s' % indicator.type
+                i = 0
+                for i, indicator in enumerate(detection.indicators):
+                    print '    %d %s' % (i, indicator.type)
+                self.assertTrue(i == detection.num_indicators - 1)
             print ''
+
+    def test_detections_since(self):
+        print "DETECTIONS SINCE"
+        second_newest = self.client.detections.next()
+        num_since_second_newest = len(self.client.detections(since=second_newest.date))
+        self.assertTrue(num_since_second_newest == 1)
+
+        self.assertTrue(len(self.client.detections(since='1970-01-01')) == len(self.client.detections))
 
     def test_indicators(self):
         print "INDICATORS"
-        for indicator in self.client.indicators:
-            print indicator.type
-            # force the load of the full object
+        for i, indicator in enumerate(self.client.indicators):
+            print indicator
+            print i, indicator.type
             if len(indicator.detections) > 0:
+                # force the load of the full object
                 print '  %s' % indicator.detections[0].summary
                 print ''
 
+    def test_limit(self):
+        print "LIMIT"
+        for type in ['indicators', 'detections', 'endpoints', 'response_plans']:
+            collection = getattr(self.client, type)
+
+            print 'checking with limit'
+            self.assertTrue(len(list(collection(limit=2))) == 2)
+            self.assertTrue(len(collection(limit=2)) == 2)
+
+            print 'checking with no limit'
+            self.assertTrue(len(list(collection(limit=None))) > 2)
+            self.assertTrue(len(collection(limit=None)) > 2)
+
+        print 'checking normal' # can't be tested above because getattr doesn't get @property
+        self.assertTrue(len(list(self.client.indicators)) > 2)
+        self.assertTrue(len(self.client.indicators) > 2)
+
+        self.assertTrue(len(list(self.client.detections)) > 2)
+        self.assertTrue(len(self.client.detections) > 2)
+
+        self.assertTrue(len(list(self.client.endpoints)) > 2)
+        self.assertTrue(len(self.client.endpoints) > 2)
+
+        self.assertTrue(len(list(self.client.response_plans)) > 2)
+        self.assertTrue(len(self.client.response_plans) > 2)
+
     def test_response_plans(self):
         print "RESPONSE_PLANS"
-        for response_plan in self.client.response_plans:
-            print "plan for detection [%s] on [%s]" % \
-                  (response_plan.detection.headline, response_plan.endpoint.hostname)
+        for i, response_plan in enumerate(self.client.response_plans):
+            print "plan %d for detection [%s] on [%s]" % \
+                  (i, response_plan.detection.headline, response_plan.endpoint.hostname)
 
             print '  %s' % response_plan.endpoint.hostname
             # force the load of the full object
@@ -67,8 +104,8 @@ class Test(unittest.TestCase):
 
     def test_endpoints(self):
         print "ENDPOINTS"
-        for endpoint in self.client.endpoints:
-            print endpoint.hostname
+        for i, endpoint in enumerate(self.client.endpoints):
+            print i, endpoint.hostname
             print '  ', endpoint.ip_addresses
             print '  ', endpoint.sensor
             print '  ', 'detections (snippets):'
@@ -78,9 +115,7 @@ class Test(unittest.TestCase):
                 print '  ', 'first detection - full object:'
                 print '  ', endpoint.detections[0].summary
             print
-            #
-            #         # code.interact(local=locals())
-    
+
 
 if __name__ == '__main__':
     unittest.main()

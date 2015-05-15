@@ -58,8 +58,7 @@ class Resource(object):
         """
         Returns an iterator for iterating through the collection of resources
         """
-        # TODO: 1) paginate and 2) since
-        return list([cls._build(data, is_snippet=False) for data in cls._request(cls.collection_url)])
+        return PaginatedCollection(cls)
 
     @classmethod
     def find(cls, id):
@@ -93,6 +92,7 @@ class Resource(object):
         self.__setattr__('_is_snippet', is_snippet)
 
     def _has_many_snippets(self, klass, field_name):
+        # snippets are not paginated
         return list([klass._build(snippet, is_snippet=True) for snippet in self._data[field_name]])
 
     def _has_one_snippet(self, klass, field_name):
@@ -102,9 +102,115 @@ class Resource(object):
         return object.__repr__(self) + ":" + self._data.__repr__()
 
     @classmethod
-    def _request(cls, url):
+    def _request(cls, url, query_params=None):
         logging.debug("GET [%s]" % url)
-        response = requests.get(url, **cls.client._request_options)
+
+        request_options = cls.client._request_options.copy()
+        if query_params:
+            request_options['params'].update(query_params)
+
+        response = requests.get(url, **request_options)
         logging.debug(response.url)
         response.raise_for_status()
         return response.json()
+
+    @classmethod
+    def _request_paginated(cls, url, query_params=None, page=0, header_total_items_key='total'):
+        logging.debug("GET PAGE %d [%s]" % (page, url))
+
+        request_options = cls.client._request_options.copy()
+        if query_params:
+            request_options['params'].update(query_params)
+        request_options['params']['page'] = page
+
+        response = requests.get(url, **request_options)
+        logging.debug(response.url)
+        return response.json(), int(response.headers[header_total_items_key]), response.links
+
+
+class PaginatedCollection(object):
+    def __init__(self, resource):
+        self.resource = resource
+
+        self.current_page_num = None
+        self.current_page_size = None
+        self.current_page_raw_items = None
+        self.current_page_position = None
+        self.overall_position = 0
+        self._size = None
+
+        # params set through __call__
+        self.limit = None
+        self.query_params = {}
+
+    def __call__(self, since=None, limit=None):
+        """
+        We define call so you can pass args like 'since' and 'limit' to the
+        collection through methods like all()
+        """
+        # self.query_params = query_params or {}
+        self.limit = limit
+        if since:
+            self.query_params['since'] = since
+        return self
+
+    def __repr__(self):
+        return object.__repr__(self) + (" of <%s>" % self.resource.__name__)
+
+    def __iter__(self):
+        return self
+
+    def __len__(self):
+        if self.limit:
+            return min(self.size, self.limit)
+        else:
+            return self.size
+
+    @property
+    def size(self):
+        if not self.current_page_num:
+            self._load_page(0)
+        return self._size
+
+    def next(self):
+        # load the first page if we haven't loaded anything yet
+        if self.current_page_num is None:
+            logging.debug("LOADING FIRST PAGE")
+            self._load_page(0)
+
+        # we hit the limit
+        if self.limit and self.overall_position >= self.limit:
+            raise StopIteration
+
+        # we ran out of items
+        if self.overall_position >= self.current_page_size:
+            raise StopIteration
+
+        # if we've already shown the last item on the page, get the next page
+        if self.current_page_position >= self.current_page_size:
+            logging.debug("LOADING NEXT PAGE (#%d)" % (self.current_page_num + 1))
+            self._load_page(self.current_page_num + 1)
+
+        # turn the raw data into a Resource
+        item = self.resource._build(self.current_page_raw_items[self.current_page_position], is_snippet=False)
+
+        # update indices
+        self.overall_position += 1
+        self.current_page_position += 1
+        return item
+
+    def _load_page(self, page_num):
+        logging.debug("LOADING PAGE [%d]" % page_num)
+        # reset the states
+        self.current_page_num = page_num
+        self.current_page_position = 0
+
+        # get the page
+        items, total, links = self.resource._request_paginated(self.resource.collection_url,
+                                                               query_params=self.query_params,
+                                                               page=page_num)
+
+        # save some info
+        self.current_page_size = len(items)
+        self.current_page_raw_items = items
+        self._size = total
