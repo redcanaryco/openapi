@@ -17,5 +17,5 @@ if __name__ == '__main__':
         print '\tDate: %s' % detection.date
         print '\tSeverity: %s' % detection.severity
         print '\tHostname: %s' % detection.endpoint.hostname
-        print '\tUser: %s' % detection.user['name']
+        print '\tUsername: %s' % detection.user['name']
         
