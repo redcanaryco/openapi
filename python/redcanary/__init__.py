@@ -1,17 +1,21 @@
 import os
+import sys
 import traceback
 from restclient import RestClient, Resource
+
+from dotenv import Dotenv
 
 
 class RedCanaryClient(RestClient):
     def __init__(self, customer_id=None, auth_token=None, **kwargs):
         try:
-            import dotenv
             # TODO: don't think this is the right location for this file
-            dotenv.read_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
+            # dotenv = Dotenv(os.path.join(os.environ['CWD'], '.env'))
+            dotenv = Dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
+            os.environ.update(dotenv)
         except:
-            print('Skipping load of .env...')
-            print(traceback.format_exc())
+            sys.stderr.write('Skipping load of .env...\n')
+            sys.stderr.write(traceback.format_exc())
 
         if not customer_id:
             customer_id = os.environ['RED_CANARY_CUSTOMER_ID']
