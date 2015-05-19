@@ -67,6 +67,10 @@ class Detection(Resource):
 
 class Endpoint(Resource):
     @property
+    def data(self):
+        return self._data
+
+    @property
     def detections(self):
         return self.has_many(Detection, 'detections')
 
