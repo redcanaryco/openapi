@@ -3,15 +3,12 @@ import sys
 import traceback
 from restclient import RestClient, Resource
 
-from dotenv import Dotenv
-
 
 class RedCanaryClient(RestClient):
     def __init__(self, customer_id=None, auth_token=None, **kwargs):
         try:
-            # TODO: don't think this is the right location for this file
-            # dotenv = Dotenv(os.path.join(os.environ['CWD'], '.env'))
-            dotenv = Dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
+            from dotenv import Dotenv
+            dotenv = Dotenv(os.path.join(os.getcwd(), '.env'))
             os.environ.update(dotenv)
         except:
             sys.stderr.write('Skipping load of .env...\n')
