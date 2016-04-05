@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
 import redcanary
-
+import logging
 
 if __name__ == '__main__':
+    logging.root.setLevel(logging.DEBUG)
 
     # Set up an instance of the Red Canary client.
     #
@@ -22,6 +23,6 @@ if __name__ == '__main__':
         print detection.headline
         print '\tDate: %s' % detection.date
         print '\tSeverity: %s' % detection.severity
-        print '\tHostname: %s' % detection.endpoint.hostname
-        print '\tUsername: %s' % detection.user['name']
+        #print '\tHostname: %s' % detection.endpoint.hostname
+        #print '\tUsername: %s' % detection.user['name']
         

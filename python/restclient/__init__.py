@@ -227,21 +227,21 @@ class PaginatedCollection(object):
         The total number of items in the collection as reported by the server (not affected by limit=)
         """
         if not self.current_page_num:
-            self._load_page(0)
+            self._load_page(1)
         return self._size
 
     def next(self):
         # load the first page if we haven't loaded anything yet
         if self.current_page_num is None:
             logging.debug("LOADING FIRST PAGE")
-            self._load_page(0)
+            self._load_page(1)
 
         # we hit the limit
         if self.limit and self.overall_position >= self.limit:
             raise StopIteration
 
         # we ran out of items
-        if self.overall_position >= self.current_page_size:
+        if self.overall_position >= self._size:
             raise StopIteration
 
         # if we've already shown the last item on the page, get the next page
