@@ -4,13 +4,13 @@ setup(
     name='redcanary',
     version='0.3',
     packages=find_packages(),
-    url='https://github.com/redcanaryco/openapi/tree/v2',
+    url='https://github.com/redcanaryco/openapi/tree/master',
     license='',
-    author='Keith McCammon',
-    author_email='keith@redcanary.co',
+    author='Red Canary',
+    author_email='support@redcanary.co',
     description='Python client for Red Canary open API.',
     install_requires=[
-        'requests[security]',
+        'requests',
         'dotenv'
     ],
     entry_points={
