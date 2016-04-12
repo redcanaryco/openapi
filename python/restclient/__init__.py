@@ -1,3 +1,4 @@
+import json
 import logging
 import requests
 
@@ -137,6 +138,10 @@ class Resource(object):
         Defines a has_one association of a <klass> object that is loaded from the <field_name> attribute
         """
         return klass.build(self._data[field_name], is_snippet=is_snippet)
+
+    @property
+    def as_json(self):
+        return json.dumps(self._data)
 
     def __getattr__(self, name):
         """

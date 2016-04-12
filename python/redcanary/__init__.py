@@ -1,4 +1,3 @@
-import json
 import os
 import sys
 import traceback
@@ -45,10 +44,6 @@ class RedCanaryClient(RestClient):
 
 
 class Detection(Resource):
-    @property
-    def as_json(self):
-        return json.dumps(self._data)
-
     @property
     def endpoint(self):
         return self.has_one(Endpoint, 'endpoint')
