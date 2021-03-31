@@ -23,7 +23,7 @@ class RedCanaryClient(RestClient):
         request_options = dict(params={'auth_token': auth_token})
         request_options.update(kwargs.pop('request_options', None) or {})
 
-        RestClient.__init__(self, 'https://%s.my.redcanary.co/openapi/v2' % customer_id,
+        RestClient.__init__(self, 'https://%s.my.redcanary.co/openapi/v3' % customer_id,
                             request_options=request_options, **kwargs)
 
     @property
