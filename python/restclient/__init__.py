@@ -98,7 +98,7 @@ class Resource(object):
         """
         Creates a way to get the Resource via all() and find()
         """
-        # print "New %s, client: %s, data: %s" % (self.__class__.__name__, client, data)
+        # print("New %s, client: %s, data: %s" % (self.__class__.__name__, client, data))
         Resource.client = client
         Resource.resource_path = resource_path or (self.__class__.__name__.lower() + 's')
         Resource.collection_url = collection_url or ("%s/%s" % (Resource.client.base_url, Resource.resource_path))

@@ -25,7 +25,7 @@ if __name__ == '__main__':
     # To output the entire detection as JSON, write detection.as_json to a
     # file or stdout. 
     for detection in rc.detections:
-        print detection.headline
-        print '\tDate: %s' % detection.date
-        print '\tSeverity: %s' % detection.severity
+        print(detection.headline)
+        print('\tDate: %s' % detection.date)
+        print('\tSeverity: %s' % detection.severity)
 
