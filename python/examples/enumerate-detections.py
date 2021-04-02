@@ -8,12 +8,6 @@ if __name__ == '__main__':
     logging.root.setLevel(logging.WARN)
 
     # Set up an instance of the Red Canary client.
-    #
-    # If intercepting SSL or dealing with certs that don't validate:
-    #   rc = redcanary.RedCanaryClient(request_options={'verify': False})
-    #
-    # The request_options get passed directly to requests, so other options
-    # may be used as needed.
     rc = redcanary.Detections()
 
     # Iterate over detections. 

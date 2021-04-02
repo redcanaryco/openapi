@@ -9,7 +9,7 @@ If you are OS X,
 
     pip install requests
 
-Create a .env file in openapi/python with the following:
+Set environment variables below or pass as optional parameters to Detections object:
 
     RED_CANARY_CUSTOMER_ID=<YOUR CUSTOMER ID/NAME>
     RED_CANARY_AUTH_TOKEN=<YOUR API TOKEN>
@@ -21,22 +21,11 @@ Create a .env file in openapi/python with the following:
 ## Examples
 
     import redcanary
-    rc = redcanary.RedCanaryClient()
+    rc = redcanary.Detections()
 
-    for detection in rc.detections(since='2015-05-10T02:15:20Z'):
-        print(detection.headline, detection.endpoint.ip_addresses)
-
-    for indicator in rc.indicators(limit=10):
-        print(indicator)
-
-    for endpoint in rc.endpoints:
-        print(endpoint.hostname + " has %d detections" % len(endpoint.detections))
-
-    for plan in rc.response_plans:
-        print("plan on %s for detection [%s]" % (plan.endpoint.hostname, plan.detection.headline))
-
-See `test.py` for more examples.
+    for detection in rc.all(since='2015-05-10T02:15:20Z'):
+        print(detection.headline, detection.hostname)
 
 ## Running the tests
 
-    python setup.py test
+    python3 -m unittest discover -s test
