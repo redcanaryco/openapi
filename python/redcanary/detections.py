@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 
 from .rest import RestClient
 
@@ -19,15 +20,25 @@ class Detections(RestClient):
             Red Canary API authorization token
             if not provided uses env variable RED_CANARY_AUTH_TOKEN
         """
+        self._customer_id = customer_id
+        self._auth_token = auth_token
 
-        if not customer_id:
-            self._customer_id = os.environ['RED_CANARY_CUSTOMER_ID']
+        if not self._customer_id:
+            try:
+                self._customer_id = os.environ['RED_CANARY_CUSTOMER_ID']
+            except KeyError:
+                pass
 
-        if not auth_token:
-            auth_token = os.environ['RED_CANARY_AUTH_TOKEN']
+        if not self._auth_token:
+            try:
+                self._auth_token = os.environ['RED_CANARY_AUTH_TOKEN']
+            except KeyError:
+                pass
 
-
-        RestClient.__init__(self, self._customer_id, auth_token)
+        if not self._customer_id or not self._auth_token:
+            raise ValueError("API token or customer id not provided or found as environment variable")
+        
+        RestClient.__init__(self, self._customer_id, self._auth_token)
 
     @property
     def portal_id(self) -> str:

@@ -45,10 +45,11 @@ class RestClient(object):
         params.update({'page' : 1})
         ret_item_list = []
 
-        first_page = requests.get(url, headers=self._headers, params=params).json()
-        total_items_int = first_page.get('meta').get('total_items')
+        first_page = requests.get(url, headers=self._headers, params=params)
+        first_page.raise_for_status()
+        total_items_int = first_page.json().get('meta').get('total_items')
         setattr(self, 'total', total_items_int)
-        ret_item_list.extend(first_page.get('data'))
+        ret_item_list.extend(first_page.json().get('data'))
 
         while len(ret_item_list) != total_items_int:
             params['page'] += 1
