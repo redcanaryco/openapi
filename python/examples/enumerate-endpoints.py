@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import redcanary
+import ..redcanary
 
 
 if __name__ == '__main__':

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import redcanary
 import logging
 
@@ -15,7 +14,7 @@ if __name__ == '__main__':
     #
     # The request_options get passed directly to requests, so other options
     # may be used as needed.
-    rc = redcanary.RedCanaryClient()
+    rc = redcanary.Detections()
 
     # Iterate over detections. 
     #
@@ -24,8 +23,7 @@ if __name__ == '__main__':
     # 
     # To output the entire detection as JSON, write detection.as_json to a
     # file or stdout. 
-    for detection in rc.detections:
+    for detection in rc.all():
         print(detection.headline)
-        print('\tDate: %s' % detection.date)
-        print('\tSeverity: %s' % detection.severity)
+        print(f'\tSeverity: {detection.severity}')
 

@@ -10,8 +10,7 @@ setup(
     author_email='support@redcanary.co',
     description='Python client for Red Canary open API.',
     install_requires=[
-        'requests',
-        'dotenv'
+        'requests'
     ],
     entry_points={
         'console_scripts': [
