@@ -3,11 +3,7 @@
 ## Getting started
 
     mkvirtualenv / workon redcanary
-    python setup.py develop
-
-If you are OS X,
-
-    pip install requests
+    python setup.py install
 
 Set environment variables below or pass as optional parameters to Detections object:
 
