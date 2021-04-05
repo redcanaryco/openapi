@@ -24,4 +24,4 @@ Set environment variables below or pass as optional parameters to Detections obj
 
 ## Running the tests
 
-    python3 -m unittest discover -s test
+    make test
