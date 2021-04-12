@@ -13,8 +13,8 @@ class TestDetection(unittest.TestCase):
     def test_object_parsing(self):
         detect_obj = redcanary.Detection(self.detection)
 
-        for key, value in detect_obj.__dict__.get('_detection').items():
-            self.assertIsNotNone(value, f"Failed to properly parse {key}")
+        for name in [n for n in dir(detect_obj) if not n.startswith('_')]:
+            self.assertIsNotNone(detect_obj.__getattribute__(name), f"Failed to properly parse {name}")
  
 
 class TestDemoDetections(unittest.TestCase):
@@ -27,8 +27,6 @@ class TestDemoDetections(unittest.TestCase):
         if not self.client.portal_id == 'demo':
             self.skipTest("Requires access to RC's demo environemnt")
 
-
-
     def test_all_dections(self):
         self.all_detections = self.client.all()
         self.assertEqual(len(self.all_detections), 243, 
@@ -40,8 +38,9 @@ class TestDemoDetections(unittest.TestCase):
     
     def test_live_detection_parsing(self):
         detect_obj = self.client.all(since="2020-01-01T00:00:00Z")[0]
-        for key, value in detect_obj.__dict__.get('_detection').items():
-            self.assertIsNotNone(value, f"Failed to properly parse {key}")
+        for name in [n for n in dir(detect_obj) if not n.startswith('_')]:
+            self.assertIsNotNone(detect_obj.__getattribute__(name), f"Failed to properly parse {name}")
+
 
 if __name__ == '__main__':
     unittest.main()
