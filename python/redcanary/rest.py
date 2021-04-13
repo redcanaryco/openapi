@@ -36,6 +36,13 @@ class RestClient(object):
         
         return self._paginated_requests(self._baseurl + api_path, params)
 
+    def _get_by_id(self, api_path: str, id: int) -> dict:
+        """Makes request to an API that takes a single id, returns json object"""
+        full_url = self.baseurl + api_path + "/" + str(id)
+        response = requests.get(full_url, headers=self._headers)
+        response.raise_for_status()
+        return response.json().get('data')[0]
+
     def _paginated_requests(self, url: str, params: dict) -> list:
         """
         Iterates through API until all items queried 

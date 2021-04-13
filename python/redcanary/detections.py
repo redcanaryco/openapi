@@ -56,7 +56,18 @@ class Detections(RestClient):
              example: 2018-07-12T12:15:20Z
         """
         return [Detection(i) for i in self._get_all('detections', locals())]
-    
+
+    def byid(self, id: int) -> object:
+        """
+        Parameters
+        --------
+        id : int
+            detection id
+        """
+        return Detection(self._get_by_id('detections', id))
+
+
+
 class Detection(object):
     """
     Object class for a red canary detection
@@ -69,6 +80,7 @@ class Detection(object):
         data item : json
         """
         self._detection = detection
+        self._attributes = detection.get('attributes')
     
     @property
     def id(self) -> int:
@@ -78,64 +90,69 @@ class Detection(object):
     @property
     def headline(self) -> str:
         """Headline of the detection, including ID and classification"""
-        return self._detection.get('attributes').get('headline')
+        return self._attributes.get('headline')
 
     @property
     def confirmed_at(self) -> str:
         """The date the detection was confirmed"""
-        return self._detection.get('attributes').get('confirmed_at')
+        return self._attributes.get('confirmed_at')
 
     @property
     def summary(self) -> str:
         """A summary of information about the detection. May be marked up using Markdown."""
-        return self._detection.get('attributes').get('summary')
+        return self._attributes.get('summary')
 
     @property
     def severity(self) -> str:
         """The severity of the detection as selected by the confirming analyst"""
-        return self._detection.get('attributes').get('severity')
+        return self._attributes.get('severity')
 
     @property
     def last_activity_seen_at(self) -> str:
         """The last time this detection was seen on your system"""
-        return self._detection.get('attributes').get('last_activity_seen_at')
+        return self._attributes.get('last_activity_seen_at')
 
     @property
     def classification(self) -> dict:
         """The classification of this detection"""
-        return self._detection.get('attributes').get('classification')
+        return self._attributes.get('classification')
 
     @property
     def time_of_occurrence(self) -> str:
         """The time the detection was confirmed as a threat by Red Canary"""
-        return self._detection.get('attributes').get('time_of_occurance')
-    
+        return self._attributes.get('time_of_occurrence')
+
     @property
     def last_acknowledged_at(self) -> str:
         """The time the detection was acknowledged"""
-        return self._detection.get('attributes').get('last_acknowledged_at')
+        return self._attributes.get('last_acknowledged_at')
     
     @property
     def last_acknowledged_by(self) -> str:
         """The user who acknowledged the detection"""
-        return self._detection.get('attributes').get('last_acknowledged_by')
+        return self._attributes.get('last_acknowledged_by')
 
     @property
     def last_remediated_status(self) -> dict:
         """Reason, state, user, and time associated with the remediatied detection"""
-        return self._detection.get('attributes').get('last_remediated_status')
+        return self._attributes.get('last_remediated_status', dict({"remediation_state": "Not remediated"}))
     
     @property
     def hostname(self) -> str:
         """The hostname of the endpoint where this detection occurred"""
-        return self._detection.get('attributes').get('hostname')
+        return self._detection.get('hostname')
 
     @property
     def username(self) -> str:
         """The username of the endpoint where this detection occurred"""
-        return self._detection.get('attributes').get('username')
+        return self._detection.get('username')
     
     @property
     def relationships(self) -> dict:
         """Resources related to this object"""
-        return self._detection.get('attributes').get('relationships')
+        return self._detection.get('relationships')
+
+    @property
+    def links(self) -> dict:
+        """Resources associated with this object"""
+        return self._detection.get('links')
