@@ -30,7 +30,7 @@ class RestClient(object):
     def headers(self) -> dict:
         return self._headers
 
-    def _get_all(self, api_path: str, params: dict) -> list:
+    def _get_all(self, api_path: str, params : dict = dict()) -> list:
         """returns list of all items returned by API query"""
         setattr(self, 'params', params)
         
