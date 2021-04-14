@@ -3,7 +3,6 @@ import logging
 import unittest
 import redcanary
 
-
 class TestDetection(unittest.TestCase):
 
     def setUp(self):

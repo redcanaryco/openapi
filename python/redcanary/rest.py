@@ -64,3 +64,13 @@ class RestClient(object):
             ret_item_list.extend(next_page.get('data'))
 
         return ret_item_list 
+
+    def _patch_request(self, api_path: str):
+        """
+        Submits HTTP patch request to API route
+        Returns detection object
+        """
+        patch_req = requests.patch(self._baseurl + api_path, headers=self._headers)
+        patch_req.raise_for_status()
+
+        return patch_req.json().get('data')[0]

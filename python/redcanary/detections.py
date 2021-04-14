@@ -86,6 +86,17 @@ class Detections(RestClient):
         detection.detectors = [Detector(i) for i in self._get_all(api_path)]
         return detection
 
+    def acknowledge(self, id: int) -> object:
+        """
+        You can mark a detection as acknowledged to inform your team. Returns detection object
+
+        Parameters
+        --------
+        id : Red Canary detection id 
+        """
+        str_api_path = f"detections/{id}/mark_acknowledged"
+        return Detection(self._patch_request(str_api_path))
+
 class Detection(object):
     """
     Object class for a red canary detection

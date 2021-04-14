@@ -1,1 +1,1 @@
-from .detections import *
+from .detections import Detections
