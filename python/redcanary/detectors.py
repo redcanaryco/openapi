@@ -1,6 +1,6 @@
 class Detector(object):
     """
-    Object class for a red canary detector
+    Object class for a Red Canary detector
     """
 
     def __init__(self, detector: dict):
