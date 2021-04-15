@@ -72,7 +72,7 @@ class Detections(RestClient):
         """
         return [Detection(i) for i in self._get_all('detections', locals())]
 
-    def get_by_id(self, id: int) -> object:
+    def by_id(self, id: int) -> object:
         """
         Searches for detection by id
 
