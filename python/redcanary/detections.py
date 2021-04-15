@@ -41,6 +41,18 @@ class Detections(RestClient):
         
         RestClient.__init__(self, self._customer_id, self._auth_token)
 
+
+        self._str_remediation_options = [
+            "remediated",
+            "not_remediated_false_positive",
+            "not_remediated_sanctioned_activity",
+            "not_remediated_unwarranted"
+        ]
+        self.REMEDIATED = self._str_remediation_options[0]
+        self.FALSE_POSITIVE = self._str_remediation_options[1]
+        self.SANCTIONED_ACTIVITY = self._str_remediation_options[2]
+        self.UNWANTED = self._str_remediation_options[3]
+
     @property
     def portal_id(self) -> str:
         return self._customer_id
@@ -60,7 +72,7 @@ class Detections(RestClient):
         """
         return [Detection(i) for i in self._get_all('detections', locals())]
 
-    def by_id(self, id: int) -> object:
+    def get_by_id(self, id: int) -> object:
         """
         Searches for detection by id
 
@@ -95,7 +107,30 @@ class Detections(RestClient):
         id : Red Canary detection id 
         """
         str_api_path = f"detections/{id}/mark_acknowledged"
+        
         return Detection(self._patch_request(str_api_path))
+    
+    def update_remediation(self, id: int, state: str, comment: str = ""):
+        """
+        You can update a detection's remediation state.
+        Parameters
+        --------
+        id : Red Canary detection id 
+        state : remediated, not_remediated_false_positive, not_remediated_sanctioned_activity, not_remediated_unwarranted
+        comment: (optional) Comment describing the reason why the detection was remediated in this manner
+        """
+        # Make sure only approved states were provided
+        if not state in self._str_remediation_options:
+            raise ValueError(f'State {state} not in {self._str_remediation_options}')
+        
+        str_api_path = f"detections/{id}/update_remediation_state"
+        params = dict()
+        params.update({
+            "remediation_state" : state,
+            "comment" : comment
+        })
+        return Detection(self._patch_request(str_api_path, params=params))
+
 
 class Detection(object):
     """

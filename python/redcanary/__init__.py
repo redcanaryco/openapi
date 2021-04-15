@@ -1,1 +1,1 @@
-from .detections import Detections
+from .detections import Detections, Detection
