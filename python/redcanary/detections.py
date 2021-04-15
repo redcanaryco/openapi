@@ -83,7 +83,7 @@ class Detections(RestClient):
         """
         return Detection(self._get_by_id('detections', id))
 
-    def get_detectors(self, detection: object) -> list:
+    def detectors(self, detection: object) -> list:
         """
         Pulls detectors associated with a particular detection
 
