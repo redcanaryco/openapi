@@ -3,6 +3,7 @@ import logging
 import unittest
 import redcanary
 
+from redcanary.detectors import Detector
 
 class TestDetection(unittest.TestCase):
 
@@ -15,7 +16,18 @@ class TestDetection(unittest.TestCase):
 
         for name in [n for n in dir(detect_obj) if not n.startswith('_')]:
             self.assertIsNotNone(detect_obj.__getattribute__(name), f"Failed to properly parse {name}")
- 
+
+class TestDetector(unittest.TestCase):
+
+    def setUp(self):
+        with open('test/data/detector.json', 'r') as infile:
+            self.detector = json.loads(infile.read())
+
+    def test_object_parsing(self):
+        detector_obj = Detector(self.detector)
+
+        for name in [n for n in dir(detector_obj) if not n.startswith('_')]:
+            self.assertIsNotNone(detector_obj.__getattribute__(name), f"Failed to properly parse {name}")
 
 class TestDemoDetections(unittest.TestCase):
     

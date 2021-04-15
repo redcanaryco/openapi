@@ -3,6 +3,7 @@ import os
 import sys
 
 from .rest import RestClient
+from .detectors import Detector
 
 class Detections(RestClient):
     """
@@ -40,12 +41,26 @@ class Detections(RestClient):
         
         RestClient.__init__(self, self._customer_id, self._auth_token)
 
+        self.REMEDIATED = "remediated"
+        self.FALSE_POSITIVE = "not_remediated_false_positive"
+        self.SANCTIONED_ACTIVITY = "not_remediated_sanctioned_activity"
+        self.UNWARRANTED = "not_remediated_unwarranted"
+
+        self._str_remediation_options = [
+            self.REMEDIATED,
+            self.FALSE_POSITIVE,
+            self.SANCTIONED_ACTIVITY,
+            self.UNWARRANTED
+        ]
+
     @property
     def portal_id(self) -> str:
         return self._customer_id
     
     def all(self, per_page: int = None, since: str = None) -> list:
         """
+        Pulls all detections matching the provided parameters
+
         Parameters
         --------
         per_page : int
@@ -57,8 +72,10 @@ class Detections(RestClient):
         """
         return [Detection(i) for i in self._get_all('detections', locals())]
 
-    def byid(self, id: int) -> object:
+    def by_id(self, id: int) -> object:
         """
+        Searches for detection by id
+
         Parameters
         --------
         id : int
@@ -66,6 +83,53 @@ class Detections(RestClient):
         """
         return Detection(self._get_by_id('detections', id))
 
+    def detectors(self, detection: object) -> list:
+        """
+        Pulls detectors associated with a particular detection
+
+        Parameters
+        --------
+        detection : Detection
+            single detection object
+        """
+        # pull out the full and partial paths to query
+        full_url = detection.links.get('detectors').get('href')
+        api_path = ('/').join(full_url.split('/')[5:])
+        detection.detectors = [Detector(i) for i in self._get_all(api_path)]
+        return detection
+
+    def acknowledge(self, id: int) -> object:
+        """
+        You can mark a detection as acknowledged to inform your team. Returns detection object
+
+        Parameters
+        --------
+        id : Red Canary detection id 
+        """
+        str_api_path = f"detections/{id}/mark_acknowledged"
+        
+        return Detection(self._patch_request(str_api_path))
+    
+    def update_remediation(self, id: int, state: str, comment: str = ""):
+        """
+        You can update a detection's remediation state.
+        Parameters
+        --------
+        id : Red Canary detection id 
+        state : remediated, not_remediated_false_positive, not_remediated_sanctioned_activity, not_remediated_unwarranted
+        comment: (optional) Comment describing the reason why the detection was remediated in this manner
+        """
+        # Make sure only approved states were provided
+        if not state in self._str_remediation_options:
+            raise ValueError(f'State {state} not in {self._str_remediation_options}')
+        
+        str_api_path = f"detections/{id}/update_remediation_state"
+        params = dict()
+        params.update({
+            "remediation_state" : state,
+            "comment" : comment
+        })
+        return Detection(self._patch_request(str_api_path, params=params))
 
 
 class Detection(object):

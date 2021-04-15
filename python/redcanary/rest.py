@@ -30,7 +30,7 @@ class RestClient(object):
     def headers(self) -> dict:
         return self._headers
 
-    def _get_all(self, api_path: str, params: dict) -> list:
+    def _get_all(self, api_path: str, params : dict = dict()) -> list:
         """returns list of all items returned by API query"""
         setattr(self, 'params', params)
         
@@ -64,3 +64,13 @@ class RestClient(object):
             ret_item_list.extend(next_page.get('data'))
 
         return ret_item_list 
+
+    def _patch_request(self, api_path: str, params: dict = {}):
+        """
+        Submits HTTP patch request to API route
+        Returns detection object
+        """
+        patch_req = requests.patch(self._baseurl + api_path, headers=self._headers, params=params)
+        patch_req.raise_for_status()
+
+        return patch_req.json().get('data')[0]

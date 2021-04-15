@@ -1,0 +1,2 @@
+{"type": "Detector","id": 2725, "attributes": {"name": "EXTALERT-55-L-3770948722", "description": "This detector identifies activity associated with an external alert source platform:\n\n| | |\n| -- | -- |\n| Name | **Endgame** |\n| Category | **Endpoint Security / Endpoint Detection & Response** |\n| Severity | **low** |\n| Classification | **Renamed Third Party Administrator Tools** |\n", "contributing_intelligence": "third_party"},"relationships": {"attack_techniques": []}}
+   
