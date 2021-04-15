@@ -41,17 +41,17 @@ class Detections(RestClient):
         
         RestClient.__init__(self, self._customer_id, self._auth_token)
 
+        self.REMEDIATED = "remediated"
+        self.FALSE_POSITIVE = "not_remediated_false_positive"
+        self.SANCTIONED_ACTIVITY = "not_remediated_sanctioned_activity"
+        self.UNWARRANTED = "not_remediated_unwarranted"
 
         self._str_remediation_options = [
-            "remediated",
-            "not_remediated_false_positive",
-            "not_remediated_sanctioned_activity",
-            "not_remediated_unwarranted"
+            self.REMEDIATED,
+            self.FALSE_POSITIVE,
+            self.SANCTIONED_ACTIVITY,
+            self.UNWARRANTED
         ]
-        self.REMEDIATED = self._str_remediation_options[0]
-        self.FALSE_POSITIVE = self._str_remediation_options[1]
-        self.SANCTIONED_ACTIVITY = self._str_remediation_options[2]
-        self.UNWANTED = self._str_remediation_options[3]
 
     @property
     def portal_id(self) -> str:
