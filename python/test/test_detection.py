@@ -34,7 +34,10 @@ class TestDemoDetections(unittest.TestCase):
     def setUp(self):
         logging.basicConfig(level=logging.DEBUG)
         
-        self.client = redcanary.Detections()
+        try:
+            self.client = redcanary.Detections()
+        except ValueError:
+            self.skipTest("Requires RED_CANARY_CUSTOMER_ID and RED_CANARY_AUTH_TOKEN")
 
         if not self.client.portal_id == 'demo':
             self.skipTest("Requires access to RC's demo environemnt")
