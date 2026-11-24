@@ -5,7 +5,7 @@ with open('README.md') as readme_file:
 
 setup(
     name='redcanary',
-    version='0.4',
+    version='0.5.0',
     python_requires='>=3.10',
     packages=find_packages(),
     url='https://github.com/redcanaryco/openapi',
